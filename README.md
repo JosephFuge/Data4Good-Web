@@ -22,7 +22,7 @@ This project utilizes the Flask library with the Jinja2 templating engine to per
 	
 	If on Windows, use the following command:
 	```
-	.venv\Scripts\acivate
+	.venv\Scripts\activate
 	```
 
 5. Install packages with the following command:
@@ -30,7 +30,12 @@ This project utilizes the Flask library with the Jinja2 templating engine to per
 	pip install -r requirements.txt
 	```
 
+Deactivate and leave the virtual environment with the following command:
+	```
+	deactivate
+	```
+
 Run the server with the following command:
-```
-python3 app.py
-```
+	```
+	python3 app.py
+	```
