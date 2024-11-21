@@ -26,8 +26,18 @@ This project utilizes the Flask library with the Jinja2 templating engine to per
 	```
 
 5. Install packages with the following command:
+
 	```
 	pip install -r requirements.txt
+	```
+
+6. Install necessary data for key phrase extraction:
+	```
+	python
+	import nltk
+	nltk.download('stopwords')
+	nltk.download('punkt_tab')
+	exit()
 	```
 
 Deactivate and leave the virtual environment with the following command:
