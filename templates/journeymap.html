@@ -169,11 +169,11 @@
               <h2 class="section-title">
                 Journey Map Recommendations
               </h2>
-              <p>
+              <p id="newJourneyMap">
                 !!! Replace with actual recommendations !!!
               </p>
               <div class="d-flex gap-3 justify-content-start">
-                <button type="button" onclick="console.log('test')">Generate new recommendation</button>
+                <button type="button" onclick="generateNewMap();">Generate new recommendation</button>
                 <a href="/distribution" class="btn btn-outline-secondary"
                   >View Distribution</a
                 >
@@ -259,5 +259,44 @@
 
     <!-- Main JS File -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        function generateNewMap() {
+            // const userInput = document.getElementById().value;
+
+            // Send POST request to the Flask API
+            // fetch('/process', {
+                // method: 'POST',
+                // headers: { 'Content-Type': 'application/json' },
+                // body: JSON.stringify({ userInput })
+            // }).then();
+
+            fetch('/process', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: '{}'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    console.log(result);
+                    document.getElementById('newJourneyMap').textContent = result.new_journey_map;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+            // Parse JSON response
+            // const result = await response.json();
+
+            // Display response on the web page
+            // document.getElementById('newJourneyMap').textContent = result.new_journey_map;
+        }
+    </script>
   </body>
 </html>
