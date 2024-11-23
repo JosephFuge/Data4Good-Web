@@ -3,6 +3,7 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 import re
 
 rake = Rake()
+# strings_to_remove = 
 
 class TextProcessor:
     @staticmethod
@@ -15,7 +16,7 @@ class TextProcessor:
         result = []
         for text in inputs:
             rake.extract_keywords_from_text(text)
-            key_phrases = rake.get_ranked_phrases()
+            key_phrases = [word for word in rake.get_ranked_phrases() if not word.isdigit() and len(word) > 2]
             result.extend(key_phrases)
 
         return result
