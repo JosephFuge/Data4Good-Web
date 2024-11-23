@@ -306,33 +306,6 @@
             // Display response on the web page
             // document.getElementById('newJourneyMap').textContent = result.new_journey_map;
         }
-
-        // Get elements
-        
-        // Function to simulate a delay (e.g., API call)
-        function simulateApiCall() {
-          return new Promise((resolve) => {
-            setTimeout(() => {
-              resolve("Data loaded successfully!");
-            }, 3000); // Simulate a 3-second delay
-          });
-        }
-        
-        // Handle button click
-        loadButton.addEventListener("click", () => {
-          // Show the spinner and hide the button
-          
-        
-          // Call the simulated API and wait for the response
-          simulateApiCall().then((data) => {
-            // Hide the spinner and show the button again
-            spinner.style.display = "none";
-            loadButton.style.display = "block";
-        
-            // Display the data (you can replace this with the actual data)
-            content.textContent = data;
-          });
-        });
     </script>
   </body>
 </html>

@@ -8,8 +8,8 @@
     <meta name="keywords" content="" />
 
     <!-- Favicons -->
-    <link href="assets/img/taps.png" rel="icon" />
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+    <link href="{{ url_for('static', filename='img/taps.png') }}" rel="icon" />
+    <link href="{{ url_for('static', filename='img/apple-touch-icon.png') }}" rel="apple-touch-icon" />
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect" />
@@ -21,26 +21,26 @@
 
     <!-- Vendor CSS Files -->
     <link
-      href="assets/vendor/bootstrap/css/bootstrap.min.css"
+      href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}"
       rel="stylesheet"
     />
     <link
-      href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}"
       rel="stylesheet"
     />
-    <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/aos/aos.css') }}" rel="stylesheet" />
     <link
-      href="assets/vendor/fontawesome-free/css/all.min.css"
+      href="{{ url_for('static', filename='vendor/fontawesome-free/css/all.min.css') }}"
       rel="stylesheet"
     />
     <link
-      href="assets/vendor/glightbox/css/glightbox.min.css"
+      href="{{ url_for('static', filename='vendor/glightbox/css/glightbox.min.css') }}"
       rel="stylesheet"
     />
-    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet" />
 
     <!-- Main CSS File -->
-    <link href="assets/css/main.css" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
 
     <!-- =======================================================
   * Template Name: Medilab
@@ -83,7 +83,7 @@
         >
           <a href="index.html" class="logo d-flex align-items-center me-auto">
             <!-- Uncomment the line below if you also wish to use an image logo -->
-            <img src="assets/img/taps.png" alt="" />
+            <img src="{{ url_for('static', filename='img/taps.png') }}" alt="" />
             <h1 class="sitename">T.A.P.S.</h1>
           </a>
 
@@ -95,7 +95,6 @@
               <li><a href="#about">About</a></li>
               <li><a href="#services">Services</a></li>
               <li><a href="#departments">Departments</a></li>
-              <li><a href="#doctors">Doctors</a></li>
               <li class="dropdown">
                 <a href="#"
                   ><span>Dropdown</span>
@@ -165,7 +164,7 @@
           <div class="row align-items-center">
             <div class="col-lg-6">
               <img
-                src="assets/img/stage2.jpg"
+                src="{{ url_for('static', filename='img/stage2.jpg') }}"
                 alt="Stage 2"
                 class="img-fluid rounded"
               />
@@ -271,6 +270,16 @@
       </section>
     </main>
 
+      <!-- Chatbot -->
+      <div id="chatbot-container" style="position: fixed; bottom: 20px; right: 20px; width: 300px; height: 400px;">
+          <iframe
+              src="https://www.chatbase.co/chatbot-iframe/GzmVboqQmLW8IeqA1tUeB"
+              width="100%"
+              style="height: 100%; min-height: 400px;"
+              frameborder="0"
+          ></iframe>
+      </div>
+
     <footer id="footer" class="footer light-background">
       <div class="container footer-top">
         <div class="row gy-4">
@@ -307,41 +316,6 @@
             </ul>
           </div>
 
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Our Services</h4>
-            <ul>
-              <li><a href="#">Web Design</a></li>
-              <li><a href="#">Web Development</a></li>
-              <li><a href="#">Product Management</a></li>
-              <li><a href="#">Marketing</a></li>
-              <li><a href="#">Graphic Design</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Hic solutasetp</h4>
-            <ul>
-              <li><a href="#">Molestiae accusamus iure</a></li>
-              <li><a href="#">Excepturi dignissimos</a></li>
-              <li><a href="#">Suscipit distinctio</a></li>
-              <li><a href="#">Dilecta</a></li>
-              <li><a href="#">Sit quas consectetur</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Nobis illum</h4>
-            <ul>
-              <li><a href="#">Ipsam</a></li>
-              <li><a href="#">Laudantium dolorum</a></li>
-              <li><a href="#">Dinera</a></li>
-              <li><a href="#">Trodelas</a></li>
-              <li><a href="#">Flexo</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
       <div class="container copyright text-center mt-4">
         <p>
           © <span>Copyright</span>
@@ -370,14 +344,14 @@
     <div id="preloader"></div>
 
     <!-- Vendor JS Files -->
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/vendor/php-email-form/validate.js"></script>
-    <script src="assets/vendor/aos/aos.js"></script>
-    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/php-email-form/validate.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/aos/aos.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/glightbox/js/glightbox.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/purecounter/purecounter_vanilla.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.js') }}"></script>
 
     <!-- Main JS File -->
-    <script src="assets/js/main.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   </body>
 </html>

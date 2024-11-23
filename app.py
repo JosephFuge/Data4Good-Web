@@ -52,7 +52,20 @@ def home():
 @app.route('/journeymap')
 def journeymap():
     key_phrases = get_key_phrases()
-    return render_template('journeymap.html', current_journey_map="fake journey map testing", keywords=', '.join(key_phrases))
+    return render_template('journeymap.html', current_journey_map="""
+                    1. Immediate Grief, Shock & Emotion:
+                        Overwhelmed, loss of purpose; shock and trauma emotions (isolation) present and challenging to understand
+                        Individuals may struggle to deal with family responsibilities alone
+                    2. Navigating Family Relationships
+                        Experiencing tension between individuals within the family unit; lack of support from family members
+                    3. Learning to Process Grief
+                        Experiencing grief and learning to process those emotions
+                    4. Moments that Matter
+                        Renewed experience of grief around anniversaries of loss, holidays, and special moments
+                    5. Feeling Immersed, Connected & Seen
+                        Finding new purpose and goals to begin moving towards Positive Integration
+                    6. New Growth & Purpose
+                        Healthy point in grief journey; feeling capable to help others and a desire to do so.""", keywords=', '.join(key_phrases))
 
 @app.route('/survey')
 def survey():
@@ -88,8 +101,10 @@ def process():
                 </Journey Map>
                 <Keywords>
                     {key_phrases}
-                </Keywords>"""
-,
+                </Keywords>
+
+                New journey map:
+                """,
             },
         ],
         max_tokens=300
@@ -100,6 +115,10 @@ def process():
     response_text = tp.replace_asterisks_with_bold(response.choices[0].message.content.strip())
 
     return jsonify({'new_journey_map': response_text})
+
+@app.route('/stage2-details')
+def stage2_details():
+    return render_template('stage2-details.html')
 
 @app.route('/distribution')
 def distribution():
