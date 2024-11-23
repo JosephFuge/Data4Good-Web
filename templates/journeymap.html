@@ -159,24 +159,31 @@
       <section id="stage-2" class="survey-section section py-5">
         <div class="container" data-aos="fade-up">
           <div class="row align-items-center">
-            <div class="col-lg-6 text-center">
+            <div class="col-4">
+              <h2 class="section-title">
+                Keywords
+              </h2>
+              <p>
+                {{ keywords }}
+              </p>
+            </div>
+            <div class="col-8 text-center">
               <h2 class="section-title">
                 Current Journey Map
               </h2>
-              {{ current_journey_map }}
-            </div>
-            <div class="col-lg-6">
+              <p>
+                {{ current_journey_map }}
+              </p>
               <h2 class="section-title">
                 Journey Map Recommendations
               </h2>
+              <div id="newMapSpinner" class="newMapSpinner" style="display: none;"></div>
+    
+              <div id="content"></div>
               <p id="newJourneyMap">
-                !!! Replace with actual recommendations !!!
               </p>
               <div class="d-flex gap-3 justify-content-start">
-                <button type="button" onclick="generateNewMap();">Generate new recommendation</button>
-                <a href="/distribution" class="btn btn-outline-secondary"
-                  >View Distribution</a
-                >
+                <button id="generateNewMapButton" type="button" class="cta-btn" onclick="generateNewMap();">Generate new recommendation</button>
               </div>
             </div>
           </div>
@@ -260,16 +267,16 @@
     <!-- Main JS File -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script>
+        const loadButton = document.getElementById("generateNewMapButton");
+        const spinner = document.getElementById("newMapSpinner");
+        const content = document.getElementById("content");
         function generateNewMap() {
             // const userInput = document.getElementById().value;
 
             // Send POST request to the Flask API
-            // fetch('/process', {
-                // method: 'POST',
-                // headers: { 'Content-Type': 'application/json' },
-                // body: JSON.stringify({ userInput })
-            // }).then();
 
+            spinner.style.display = "block";
+            loadButton.style.display = "none";
             fetch('/process', {
                     method: 'POST',
                     headers: {
@@ -285,7 +292,9 @@
                 })
                 .then(result => {
                     console.log(result);
-                    document.getElementById('newJourneyMap').textContent = result.new_journey_map;
+                    document.getElementById('newJourneyMap').innerHTML = result.new_journey_map;
+                    loadButton.style.display = "none";
+                    spinner.style.display = "none";
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -297,6 +306,33 @@
             // Display response on the web page
             // document.getElementById('newJourneyMap').textContent = result.new_journey_map;
         }
+
+        // Get elements
+        
+        // Function to simulate a delay (e.g., API call)
+        function simulateApiCall() {
+          return new Promise((resolve) => {
+            setTimeout(() => {
+              resolve("Data loaded successfully!");
+            }, 3000); // Simulate a 3-second delay
+          });
+        }
+        
+        // Handle button click
+        loadButton.addEventListener("click", () => {
+          // Show the spinner and hide the button
+          
+        
+          // Call the simulated API and wait for the response
+          simulateApiCall().then((data) => {
+            // Hide the spinner and show the button again
+            spinner.style.display = "none";
+            loadButton.style.display = "block";
+        
+            // Display the data (you can replace this with the actual data)
+            content.textContent = data;
+          });
+        });
     </script>
   </body>
 </html>

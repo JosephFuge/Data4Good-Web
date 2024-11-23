@@ -1,53 +1,61 @@
 from flask import Flask, render_template, jsonify
-from rake_nltk import Rake
-import openai
 from openai import AzureOpenAI
-
-app = Flask(__name__)
-rake = Rake()
 from dotenv import load_dotenv
+from services.text_processing import TextProcessor
+import csv
 import os
 
 load_dotenv()
 
-# Set up the OpenAI API with Azure
-# openai.base_url = os.getenv("AZURE_OPENAI_ENDPOINT")
-# openai.api_version = "2024-10-21"  
-# openai.api_key = os.getenv("AZURE_OPENAPI_KEY")
+app = Flask(__name__)
 
 deployment_name = os.getenv("AZURE_OPENAI_MODEL_NAME")
 azure_api_key = os.getenv("AZURE_OPENAPI_KEY")
-
 openai_client = AzureOpenAI(api_key=azure_api_key, azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"), api_version="2024-10-21")
+
+csv_path = "TAPS_Cleaned_CSV.csv"
+description_column = "Logs.Description"
+sort_column = "Logs.LogDate"
+
+key_phrases = []
+
+def get_key_phrases():
+    if len(key_phrases) > 0:
+        return key_phrases
+
+    recent_logs = 100
+    with open(csv_path, mode='r', newline='', encoding='utf-8') as file:
+        reader = csv.DictReader(file)
+        
+        # Extract values from the specified column
+        column_values = [(row[sort_column], row[description_column]) for row in reader]
+
+    if recent_logs > 0:
+        column_values.sort(key=lambda val: val[0])
+
+        column_descriptions = [val[1] for val in column_values[0:50]]
+    else:
+        column_descriptions = [val[1] for val in column_values]
+
+    tp = TextProcessor()
+    emotional_words = [sentiment['text'] for sentiment in tp.sentiment_extremes(column_descriptions, high_thresh=0.95, low_thresh=0.05)]
+
+    key_words = tp.extract_keywords_from_list(emotional_words)
+    key_words = key_words[0:10]
+
+    return key_words
 
 @app.route('/')
 def home():
-    text = """Natural language processing (NLP) is a field of artificial intelligence 
-    that focuses on the interaction between computers and humans using natural language."""
-
-    # Extract key phrases
-    rake.extract_keywords_from_text(text)
-
-    # Get the ranked key phrases
-    key_phrases = rake.get_ranked_phrases()
-    return render_template('index.html', data=key_phrases[0])
+    return render_template('index.html')
 
 @app.route('/journeymap')
 def journeymap():
-    # Extract key phrases
-    # rake.extract_keywords_from_text(text)
-
-    # Get the ranked key phrases
-    # key_phrases = rake.get_ranked_phrases()
-    return render_template('journeymap.html', current_journey_map="fake journey map testing")
+    key_phrases = get_key_phrases()
+    return render_template('journeymap.html', current_journey_map="fake journey map testing", keywords=', '.join(key_phrases))
 
 @app.route('/survey')
 def survey():
-    # Extract key phrases
-    # rake.extract_keywords_from_text(text)
-
-    # Get the ranked key phrases
-    # key_phrases = rake.get_ranked_phrases()
     return render_template('survey.html')
 
 @app.route('/survey-results')
@@ -56,13 +64,14 @@ def survey_results():
 
 @app.route('/process', methods=['POST'])
 def process():
-    # Make a request (e.g., for text completion)
+    key_phrases = get_key_phrases()
     response = openai_client.chat.completions.create(
         model=deployment_name,  # Specify the deployment name
         messages=[
             {
                 "role": "user",
-                "content": """TAPS Journey map:
+                "content": f"""Given the previous TAPS Journey map, which is meant to help TAPS employees identify where a given person is in their grief journey following the death of a family member or friend who was a current or former member of the military, and then a list of keywords which are appearing more often in conversations between TAPS employees and survivors, generate a new TAPS journey map to account for adapting needs:
+                <Journey Map>
                     1. Immediate Grief, Shock & Emotion:
                         Overwhelmed, loss of purpose; shock and trauma emotions (isolation) present and challenging to understand
                         Individuals may struggle to deal with family responsibilities alone
@@ -75,16 +84,22 @@ def process():
                     5. Feeling Immersed, Connected & Seen
                         Finding new purpose and goals to begin moving towards Positive Integration
                     6. New Growth & Purpose
-                        Healthy point in grief journey; feeling capable to help others and a desire to do so.""",
+                        Healthy point in grief journey; feeling capable to help others and a desire to do so.
+                </Journey Map>
+                <Keywords>
+                    {key_phrases}
+                </Keywords>"""
+,
             },
         ],
         max_tokens=300
     )
 
-    # Print the result
-    print(response.choices[0].message.content.strip())
+    tp = TextProcessor()
 
-    return jsonify({'new_journey_map': response.choices[0].message.content.strip()})
+    response_text = tp.replace_asterisks_with_bold(response.choices[0].message.content.strip())
+
+    return jsonify({'new_journey_map': response_text})
 
 @app.route('/distribution')
 def distribution():

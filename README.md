@@ -37,6 +37,7 @@ This project utilizes the Flask library with the Jinja2 templating engine to per
 	import nltk
 	nltk.download('stopwords')
 	nltk.download('punkt_tab')
+	nltk.download('vader_lexicon')
 	exit()
 	```
 
